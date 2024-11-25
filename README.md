@@ -50,7 +50,7 @@ Replace `mongodb://localhost:27017` with your MongoDB URI.
 Run the following command to install all required Node.js packages:
 
 ```bash
-npm install
+npm install express mongoose body-parser cors 
 ```
 
 
@@ -80,7 +80,7 @@ npm install
 ## Folder Structure
 
 ```plaintext
-Task-Manager/
+Assignment Project/
 ├── public/                # Static files (HTML, CSS, JavaScript)
 │   ├── index.html         # Main HTML file
 │   ├── style.css          # Styling
