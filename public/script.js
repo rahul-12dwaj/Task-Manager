@@ -43,10 +43,21 @@ taskForm.addEventListener('submit', async (e) => {
 taskList.addEventListener('click', async (e) => {
   if (e.target.classList.contains('delete-btn')) {
     const id = e.target.dataset.id;
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    fetchTasks();
+    try {
+      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const error = await res.json();
+        alert(`Error: ${error.message}`);
+        return;
+      }
+      fetchTasks();
+    } catch (err) {
+      console.error('Error during deletion:', err);
+      alert('Failed to delete the task. Try again.');
+    }
   }
 });
+
 
 // Initial Load
 fetchTasks();

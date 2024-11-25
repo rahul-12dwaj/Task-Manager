@@ -3,8 +3,17 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route to serve the main HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Middleware
 app.use(cors());
@@ -74,15 +83,33 @@ app.put('/api/tasks/:id', async (req, res) => {
 
 app.delete('/api/tasks/:id', async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
-    if (!task) return res.status(404).json({ message: 'Task not found' });
+    const taskId = req.params.id;
+    console.log(`Attempting to delete task with ID: ${taskId}`);
+    
+    // Validate the ID format
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      console.log('Invalid ID format');
+      return res.status(400).json({ message: 'Invalid task ID format' });
+    }
 
-    await task.remove();
-    res.json({ message: 'Task deleted' });
+    // Find the task by ID
+    const task = await Task.findById(taskId);
+    if (!task) {
+      console.log('Task not found');
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // Delete the task using deleteOne or findByIdAndDelete
+    await task.deleteOne();  // or Task.findByIdAndDelete(taskId);
+
+    console.log('Task deleted successfully');
+    res.json({ message: 'Task deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error during task deletion:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;
