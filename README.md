@@ -32,7 +32,6 @@ Clone this repository to your local machine:
 
 ```bash
 git clone https://github.com/your-username/Task-Manager.git
-cd Task-Manager
 ```
 
 ### Step 2: Set Up Environment Variables
