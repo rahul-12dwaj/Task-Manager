@@ -53,17 +53,7 @@ Run the following command to install all required Node.js packages:
 npm install
 ```
 
-### Step 4: Start the Application
 
-Start the server with:
-
-```bash
-npm start
-```
-
-The application will run at `http://localhost:5000`.
-
----
 
 ## How to Use the Application
 
